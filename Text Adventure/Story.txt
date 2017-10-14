@@ -1,0 +1,8 @@
+Your heart is racing. They are on your tail, getting closer with every step. You have to do something to get them off your trail. 
+You round the corner and see some garbage dicinegrators ahead. You have an idea. 
+*Knock over garbage dicinegrators?
+$yes= You knock over the decinegrators and manage to trip a couple of them, but some are able to avoid your rather pathetic attempt at escape. The time you lost tipping them over was too much and they are able to tackle you to the ground. You hit your head in the fall, and begin seeing stars. "You're coming with us!" grunted the larger and smellier man. That is the last thing you hear before passing out. 
+$no= You decide against trying to tip over the decinegrators. They were too close and you didn't have the time to spare. You try pushing just a little harder but manage to lose your footing in the process. You trip, you hit you head in the fall, and begin seeing stars. "You're coming with us!" grunted the larger and smellier man. That is the last thing you hear before passing out.
+%character creation%
+
+
