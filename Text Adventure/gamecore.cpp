@@ -8,10 +8,21 @@
 #include <vector>
 #include "Character.h"
 #include <Windows.h>
+#include<map>
 
 using namespace std;
 
-void buildMap(vector<vector<char>> &map, ifstream &maps, pair<int, int> &playerPos);
+
+
+struct MapObject
+{
+	vector<vector<char>> mapVector;
+	pair<int, int> playerStart;
+	string name;
+	map<pair<int, int>, string> roomList;
+};
+
+MapObject currentMap; 
 
 
 
@@ -26,147 +37,178 @@ void ShowConsoleCursor(bool showFlag)
 	SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-void clearMap(vector<vector<char>> &map)
+void clearMap(vector<vector<char>> &mapVector)
 {
-	for (int i = 0; i < map.size(); i++)
-	{
-		map[i].clear();
-
-	}
+	mapVector.resize(0);
 }
 
-void printMap(vector<vector<char>> map)
+void printMap(MapObject mapObject)
 {
 	system("cls");
-	for (int i = 0; i < map.size(); i++)
+	for (int i = 0; i < mapObject.mapVector.size(); i++)
 	{
-		for (int j = 0; j < map[i].size(); j++)
+		for (int j = 0; j < mapObject.mapVector[i].size(); j++)
 		{
-			cout << map[i][j];
+			cout << mapObject.mapVector[i][j];
 
 		}
 		cout << endl;
 	}
 }
 
-void updatePlayerPosition(vector<vector<char>> &map, string direction, pair<int, int> &playerPos)
+void buildMaps(ifstream &maps, map<string, MapObject> &masterMapsList)		//Uses a 2-d vector to create a 2-d map space in the console 
+{
+	vector<vector<char>> mapVector;
+	string firststr;
+	string secondstr;
+	int first, second;
+	pair<int, int> playerPos;
+	char current = ' ';
+	string line = "";
+	string mapName;
+	vector<char> row;
+	MapObject tempMapObj;
+	string roomName = "";
+	
+
+	while (!maps.eof())
+	{
+		getline(maps, mapName);		//read name of map
+		getline(maps, firststr);
+		getline(maps, secondstr);
+		playerPos.first = stoi(firststr);
+		playerPos.second = stoi(secondstr);
+		getline(maps, line);									//This retrievs the line of the map from the maps.txt file 
+		while (line != "`")
+		{
+			for (int i = 0; i < line.length(); i++)
+			{
+				row.push_back(line[i]);
+
+			}
+			mapVector.push_back(row);
+			row.clear();
+			getline(maps, line);
+		}
+		while (roomName != "~")
+		{
+			getline(maps, roomName);  //room name
+			if (roomName != "~")
+			{
+				getline(maps, firststr);//x
+				getline(maps, secondstr);//y
+				tempMapObj.roomList[make_pair(stoi(firststr), stoi(secondstr))] = roomName;
+			}
+		}
+		roomName = "";
+		//printMap(mapVector);
+		tempMapObj.mapVector = mapVector;
+		tempMapObj.name = mapName;
+		tempMapObj.playerStart = playerPos;
+		tempMapObj.mapVector[playerPos.first][playerPos.second] = '@';
+		masterMapsList[mapName] = tempMapObj;
+		tempMapObj.roomList.clear();
+		tempMapObj.mapVector.resize(0);
+		mapVector.resize(0);
+	}
+	
+}
+
+void updatePlayerPosition(MapObject &currentMap, string direction, pair<int, int> &playerPos, map<string, MapObject> masterMapsList)
 {
 	bool didMove = false;
-	map[playerPos.first][playerPos.second] = ' ';
+	currentMap.mapVector[playerPos.first][playerPos.second] = ' ';
 	if (direction == "up")
 	{
 		if (playerPos.first > 0)
 		{
-			if (map[playerPos.first - 1][playerPos.second] == ' ')
+			if (currentMap.mapVector[playerPos.first - 1][playerPos.second] == ' ')
 			{
 				playerPos.first--;
+				didMove = true;
 			}
-			else if (map[playerPos.first - 1][playerPos.second] == '|')
+			else if (currentMap.mapVector[playerPos.first - 1][playerPos.second] == '_')
 			{
-				ifstream newMap("map2.txt");
-				clearMap(map);
-				buildMap(map, newMap, playerPos);
+				playerPos.first--;
+				clearMap(currentMap.mapVector);
+				currentMap = masterMapsList[currentMap.roomList[playerPos]];
+				playerPos = currentMap.playerStart;
+				didMove = true;
 			}
-			didMove = true;
+			
 		}
 	}
 	else if (direction == "down")
 	{
-		if (playerPos.first < map.size() - 1)
+		if (playerPos.first < currentMap.mapVector.size() - 1)
 		{
-			if (map[playerPos.first + 1][playerPos.second] == ' ')
+			if (currentMap.mapVector[playerPos.first + 1][playerPos.second] == ' ')
 			{
 				playerPos.first++;
+				didMove = true;
 			}
-			else if (map[playerPos.first + 1][playerPos.second] == '|')
+			else if (currentMap.mapVector[playerPos.first + 1][playerPos.second] == '_')
 			{
-				//to new map
-				ifstream newMap("map2.txt");
-				clearMap(map);
-				buildMap(map, newMap, playerPos);
+				
+				playerPos.first++;
+				clearMap(currentMap.mapVector);
+				currentMap = masterMapsList[currentMap.roomList[playerPos]];
+				playerPos = currentMap.playerStart;
+				didMove = true;
 			}
-			didMove = true;
+			
 		}
 	}
 	else if (direction == "left")
 	{
 		if (playerPos.second > 0)
 		{
-			if (map[playerPos.first][playerPos.second - 1] == ' ')
+			if (currentMap.mapVector[playerPos.first][playerPos.second - 1] == ' ')
 			{
 				playerPos.second--;
+				didMove = true;
 			}
-			else if (map[playerPos.first][playerPos.second - 1] == '|')
+			else if (currentMap.mapVector[playerPos.first][playerPos.second - 1] == '|')
 			{
-				//to new map
-				ifstream newMap("map2.txt");
-				clearMap(map);
-				buildMap(map, newMap, playerPos);
+				playerPos.second--;
+				clearMap(currentMap.mapVector);
+				currentMap = masterMapsList[currentMap.roomList[playerPos]];
+				playerPos = currentMap.playerStart;
+				didMove = true;
 			}
-			didMove = true;
+			
 		}
 	}
 	else if (direction == "right")
 	{
-		if (playerPos.second < map[0].size() - 1)
+		if (playerPos.second < currentMap.mapVector[0].size() - 1)
 		{
-			if (map[playerPos.first][playerPos.second + 1] == ' ')
+			if (currentMap.mapVector[playerPos.first][playerPos.second + 1] == ' ')
 			{
 				playerPos.second++;
+				didMove = true;
 			}
-			else if (map[playerPos.first][playerPos.second + 1] == '|')
+			else if (currentMap.mapVector[playerPos.first][playerPos.second + 1] == '|')
 			{
-				//to new map
-				ifstream newMap("map2.txt");
-				clearMap(map);
-				buildMap(map, newMap, playerPos);
+				playerPos.second++;
+				clearMap(currentMap.mapVector);
+				currentMap = masterMapsList[currentMap.roomList[playerPos]];
+				playerPos = currentMap.playerStart;
+				didMove = true;
 			}
-			didMove = true;
+			
 		}
 	}
-
-	map[playerPos.first][playerPos.second] = '@';
+	
+	currentMap.mapVector[playerPos.first][playerPos.second] = '@';
 	if (didMove == true)
 	{
-		printMap(map);
+		printMap(currentMap);
 		cout << playerPos.first << " " << playerPos.second;
 	}
 }
 
-void buildMap(vector<vector<char>> &map, ifstream &maps, pair<int, int> &playerPos)		//Uses a 2-d vector to create a 2-d map space in the console 
-{
-	string firststr;
-	string secondstr;
-	int first, second;
-	char current = ' ';
-	string line = ""; 
-	vector<char> row;
 
-
-	getline(maps, firststr);
-	getline(maps, secondstr);
-
-	first = stoi(firststr);
-	second = stoi(secondstr);
-
-	while (!maps.eof())
-	{
-		getline(maps, line);									//This retrievs the line of the map from the maps.txt file 
-		for (int i = 0; i < line.length(); i++)
-		{
-			row.push_back(line[i]);
-			
-		}
-		map.push_back(row); 
-		row.clear();
-	}
-
-	playerPos.first = first;
-	playerPos.second = second;
-	map[playerPos.first][playerPos.second] = '@';
-
-
-}
 
 
 
@@ -177,7 +219,8 @@ void main()
 	string name;
 	int selection;
 	pair <int, int> playerPos;
-	vector <vector<char>> map;
+	vector <vector<char>> mapVector;
+	map<string, MapObject> masterMapsList;
 
 	cout << "Please enter your name traveler: ";
 	cin >> name; 
@@ -215,27 +258,28 @@ void main()
 	}
 	ShowConsoleCursor(false); 
 	playerPos = pair <int, int>(1, 1);
-	buildMap(map, maps, playerPos);
-	printMap(map);
-
+	buildMaps(maps, masterMapsList);
+	printMap(masterMapsList["start"]);
+	currentMap = masterMapsList["start"];
+	playerPos = masterMapsList["start"].playerStart;
 
 		while (true)
 		{
 			if (GetAsyncKeyState(VK_UP))
 			{
-				updatePlayerPosition(map, "up", playerPos);
+				updatePlayerPosition(currentMap, "up", playerPos, masterMapsList);
 			}
 			else if (GetAsyncKeyState(VK_DOWN))
 			{
-				updatePlayerPosition(map, "down", playerPos);
+				updatePlayerPosition(currentMap, "down", playerPos, masterMapsList);
 			}
 			else if (GetAsyncKeyState(VK_LEFT))
 			{
-				updatePlayerPosition(map, "left", playerPos);
+				updatePlayerPosition(currentMap, "left", playerPos, masterMapsList);
 			}
 			else if (GetAsyncKeyState(VK_RIGHT))
 			{
-				updatePlayerPosition(map, "right", playerPos);
+				updatePlayerPosition(currentMap, "right", playerPos, masterMapsList);
 			}
 			Sleep(100);
 		}
