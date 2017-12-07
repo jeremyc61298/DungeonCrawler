@@ -1,4 +1,5 @@
 //ncurese library still needs to be added to optimize printMap
+//possibly pdcurses? ncurses may not exist on windows
 
 
 
