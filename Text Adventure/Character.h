@@ -1,3 +1,4 @@
+/* Character.h */
 #pragma once
 #include <string>
 
@@ -5,7 +6,7 @@ using namespace std;
 
 class Character {
 public:
-	Character(int);
+	Character(int, string);
 	~Character();
 
 	int getStr();
@@ -27,8 +28,6 @@ public:
 	void setName(string);
 	
 	bool addExp(int); 
-
-
 	
 private: 
 	int str;

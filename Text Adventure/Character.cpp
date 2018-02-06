@@ -1,7 +1,8 @@
+/* Character.cpp */
 #include "Character.h"
 #include <string> 
 
-Character::Character(int type) {
+Character::Character(int type, string name) :name(name) {
 
 	switch (type) 
 	{
@@ -46,8 +47,6 @@ Character::Character(int type) {
 			isBarren = true;
 			break;
 	}
-	
-
 	requiredExp = 100; 
 }
 
