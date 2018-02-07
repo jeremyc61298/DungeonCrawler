@@ -80,5 +80,6 @@ void main()
 			{
 				Dungeon.updatePlayerPosition("right");
 			}
+			Sleep(50);
 		}
 }
