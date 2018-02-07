@@ -95,12 +95,11 @@ void MapControl::buildMaps()		//Uses a 2-d vector to create a 2-d map space in t
 void MapControl::printMap(MapObject mapObject) const
 {
 	system("cls");
-	for (int i = 0; i < mapObject.mapVector.size(); i++)
+	for (auto i = mapObject.mapVector.begin(); i < mapObject.mapVector.end(); i++)
 	{
-		for (int j = 0; j < mapObject.mapVector[i].size(); j++)
+		for (auto j = i->begin(); j < i->end(); j++)
 		{
-			cout << mapObject.mapVector[i][j];
-
+			cout << *j;
 		}
 		cout << endl;
 	}
