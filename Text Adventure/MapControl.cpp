@@ -15,7 +15,7 @@ MapControl::~MapControl()
 {
 }
 
-void MapControl::ShowConsoleCursor(bool showFlag)
+void MapControl::showConsoleCursor(bool showFlag) const
 {
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -28,7 +28,7 @@ void MapControl::ShowConsoleCursor(bool showFlag)
 
 void MapControl::initializeDungeon()
 {
-	ShowConsoleCursor(false);
+	showConsoleCursor(false);
 	buildMaps();
 	printMap(masterMapsList["start"]);
 	currentMap = (masterMapsList["start"]);
@@ -42,7 +42,6 @@ void MapControl::buildMaps()		//Uses a 2-d vector to create a 2-d map space in t
 	string secondstr;
 	int first, second;
 	pair<int, int> playerPos;
-	char current = ' ';
 	string line = "";
 	string mapName;
 	vector<char> row;
@@ -64,7 +63,7 @@ void MapControl::buildMaps()		//Uses a 2-d vector to create a 2-d map space in t
 			{
 				row.push_back(line[i]);
 			}
-			mapVector.push_back(row);
+			tempMapObj.mapVector.push_back(row);
 			row.clear();
 			getline(maps, line);
 		}
@@ -104,7 +103,7 @@ void MapControl::printMap(MapObject mapObject) const
 	}
 }
 
-void MapControl::clearMap(vector<vector<char>> &mapVector)
+void MapControl::clearMap(vector<vector<char>> &mapVector) const
 {
 	mapVector.resize(0);
 }

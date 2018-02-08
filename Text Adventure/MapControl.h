@@ -35,13 +35,13 @@ class MapControl
 		void buildMaps();
 		void updatePlayerPosition(const string);
 		void printMap(MapObject) const;
-		void clearMap(vector<vector<char>>&);
+		void clearMap(vector<vector<char>>&) const;
 	private: 
 		pair <int, int> playerPos;
 		MapObject currentMap;
 		map<string, MapObject> masterMapsList;
 		ifstream maps;
-		void ShowConsoleCursor(bool);
+		void showConsoleCursor(bool) const;
 		bool moveUp(bool);
 		bool moveDown(bool);
 		bool moveLeft(bool);
