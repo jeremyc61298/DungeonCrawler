@@ -9,14 +9,14 @@ public:
 	Character(int, string);
 	~Character();
 
-	int getStr();
-	int getVit();
-	int getDef();
-	int getAtk();
-	int getSpd();
-	int getSmt();
-	int getMna();
-	string getName();
+	int getStr() const;
+	int getVit() const;
+	int getDef() const;
+	int getAtk() const;
+	int getSpd() const;
+	int getSmt() const;
+	int getMna() const;
+	string getName() const;
 
 	void setStr(int);
 	void setVit(int);

@@ -25,7 +25,7 @@ void main()
 	
 
 	// For the new MapControl Class
-	MapControl Dungeon;
+	MapControl dungeon;
 
 	cout << "Please enter your name traveler: ";
 	cin >> name; 
@@ -60,25 +60,25 @@ void main()
 		player = new Character(4, name);
 	}
 	
-	Dungeon.initializeDungeon();
+	dungeon.initializeDungeon();
 
 		while (true)
 		{
 			if (GetAsyncKeyState(VK_UP))
 			{
-				Dungeon.updatePlayerPosition("up");
+				dungeon.updatePlayerPosition("up");
 			}
 			else if (GetAsyncKeyState(VK_DOWN))
 			{
-				Dungeon.updatePlayerPosition("down");
+				dungeon.updatePlayerPosition("down");
 			}
 			else if (GetAsyncKeyState(VK_LEFT))
 			{
-				Dungeon.updatePlayerPosition("left");
+				dungeon.updatePlayerPosition("left");
 			}
 			else if (GetAsyncKeyState(VK_RIGHT))
 			{
-				Dungeon.updatePlayerPosition("right");
+				dungeon.updatePlayerPosition("right");
 			}
 			Sleep(10);
 		}

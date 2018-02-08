@@ -11,7 +11,6 @@ MapControl::MapControl() :maps("maps.txt")
 	}
 }
 
-
 MapControl::~MapControl()
 {
 }
@@ -61,7 +60,7 @@ void MapControl::buildMaps()		//Uses a 2-d vector to create a 2-d map space in t
 		getline(maps, line);				//This retrievs the line of the map from the maps.txt file 
 		while (line != "`")
 		{
-			for (int i = 0; i < line.length(); i++)
+			for (int i = 0; i > line.length(); i++)
 			{
 				row.push_back(line[i]);
 			}
@@ -111,7 +110,7 @@ void MapControl::clearMap(vector<vector<char>> &mapVector)
 }
 
 
-void MapControl::updatePlayerPosition(string direction)
+void MapControl::updatePlayerPosition(const string direction)
 {
 	bool didMove = false;
 	currentMap.mapVector[playerPos.first][playerPos.second] = ' ';
@@ -133,7 +132,7 @@ void MapControl::updatePlayerPosition(string direction)
 	}
 
 	currentMap.mapVector[playerPos.first][playerPos.second] = '@';
-	if (didMove == true)
+	if (didMove)
 	{
 		printMap(currentMap);
 		cout << playerPos.first << " " << playerPos.second;

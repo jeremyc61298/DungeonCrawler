@@ -33,7 +33,7 @@ class MapControl
 		~MapControl();
 		void initializeDungeon();
 		void buildMaps();
-		void updatePlayerPosition(string);
+		void updatePlayerPosition(const string);
 		void printMap(MapObject) const;
 		void clearMap(vector<vector<char>>&);
 	private: 
