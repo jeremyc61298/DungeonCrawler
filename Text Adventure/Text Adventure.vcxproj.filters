@@ -21,6 +21,9 @@
     <ClCompile Include="gamecore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MapControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Story.txt" />
@@ -41,6 +44,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Barren.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

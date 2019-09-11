@@ -1,7 +1,8 @@
+/* Character.cpp */
 #include "Character.h"
 #include <string> 
 
-Character::Character(int type) {
+Character::Character(int type, string name) :name(name) {
 
 	switch (type) 
 	{
@@ -46,8 +47,6 @@ Character::Character(int type) {
 			isBarren = true;
 			break;
 	}
-	
-
 	requiredExp = 100; 
 }
 
@@ -57,40 +56,40 @@ Character:: ~Character() {
 
 
 
-int Character::getStr() {
+int Character::getStr() const{
 	return str;
 }
 
-int Character::getVit() {
+int Character::getVit() const{
 	return vit;
 }
 
-int Character::getDef() {
+int Character::getDef() const{
 	return def;
 }
 
-int Character::getAtk() {
+int Character::getAtk() const{
 	return atk; 
 }
 
-int Character::getSpd() {
+int Character::getSpd() const{
 	return spd;
 }
 
-int Character::getSmt() {
+int Character::getSmt() const{
 	return smt;
 }
 
-int Character::getMna() {
+int Character::getMna() const{
 	return mna;
 }
 
-string Character::getName() {
+string Character::getName() const{
 	return name;
 }
 
 
-bool Character::addExp(int xp) {
+bool Character::addExp(int const xp) {
 	exp = xp + exp;
 	return checkLvl();
 }
@@ -101,35 +100,34 @@ bool Character::checkLvl() {
 		requiredExp += (requiredExp * lvl);
 		return true;
 	}
-	else {
-		return false;
-	}
+	
+	return false;
 }
 
-void Character::setStr(int inc) {
+void Character::setStr(const int inc) {
 	str += inc;
 }
 
-void Character::setVit(int inc) {
+void Character::setVit(const int inc) {
 	vit += inc;
 }
 
-void Character::setAtk(int inc) {
+void Character::setAtk(const int inc) {
 	atk += inc;
 }
 
-void Character::setDef(int inc) {
+void Character::setDef(const int inc) {
 	def += inc;
 }
-void Character::setSpd(int inc) {
+void Character::setSpd(const int inc) {
 	spd += inc;
 }
 
-void Character::setSmt(int inc) {
+void Character::setSmt(const int inc) {
 	smt += inc;
 }
 
-void Character::setMna(int inc) {
+void Character::setMna(const int inc) {
 	mna += inc;
 }
 
